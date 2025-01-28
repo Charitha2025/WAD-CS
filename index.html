@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bg{
+          background-color: #e7f3f0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-bar {
+            margin-bottom: 30px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+
+        .image-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(70%);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: scale(0.8);
+        }
+
+        .image-card:hover .overlay {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .overlay h3 {
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .overlay p {
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* Center content for destination page */
+        #destinationPage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .content {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .carousel-inner img {
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body class="bg">
+
+    <h1 id="pageTitle">Explore the World !! </h1>
+
+    <!-- Search Bar (Visible only on the main page) -->
+    <input type="text" id="searchInput" class="search-bar form-control" placeholder="Search for a country..." oninput="filterCountries()" />
+
+    <div class="container" id="mainPage">
+        <!-- Paris Image -->
+        <div class="image-card" data-country="paris" onclick="showDestination('paris')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDkFG9SRaRu9jzki7V77vHgCpnSmMCSPsIw&s" alt="Paris">
+            <div class="overlay">
+                <h3>Beautiful Paris</h3>
+                <p>Explore the city of lights.</p>
+            </div>
+        </div>
+
+        <!-- Bali Image -->
+        <div class="image-card" data-country="bali" onclick="showDestination('bali')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSQW0v6-m1GQuwJhL5imutCRGPhTX5knUW9NOUwOx7t4qmVnJpfioiBJpfC6sxfxbhtE8&usqp=CAU" alt="Bali">
+            <div class="overlay">
+                <h3>Serene Bali</h3>
+                <p>Relax on the tropical beaches.</p>
+            </div>
+        </div>
+
+        <!-- Tokyo Image -->
+        <div class="image-card" data-country="tokyo" onclick="showDestination('tokyo')">
+            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/4b/5d/10/caption.jpg?w=1400&h=1400&s=1&cx=1005&cy=690&chk=v1_2ed86f729380ea073850" alt="Tokyo">
+            <div class="overlay">
+                <h3>Majestic Tokyo</h3>
+                <p>Visit the vibrant capital of Japan.</p>
+            </div>
+        </div>
+
+        <!-- New York City Image -->
+        <div class="image-card" data-country="newyork" onclick="showDestination('newyork')">
+            <img src="https://www.planetware.com/photos-large/US/usa-new-york-city-central-park.jpg" alt="New York City">
+            <div class="overlay">
+                <h3>Exciting New York</h3>
+                <p>See the Statue of Liberty, Times Square, and more!</p>
+            </div>
+        </div>
+
+        <!-- London Image -->
+        <div class="image-card" data-country="london" onclick="showDestination('london')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Big_Ben_%28London%29.jpg" alt="London">
+            <div class="overlay">
+                <h3>Historic London</h3>
+                <p>Discover landmarks like Big Ben and the Tower of London.</p>
+            </div>
+        </div>
+
+        <!-- Rome Image -->
+        <div class="image-card" data-country="rome" onclick="showDestination('rome')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Colosseum_in_Rome.jpg" alt="Rome">
+            <div class="overlay">
+                <h3>Ancient Rome</h3>
+                <p>Explore the Colosseum and ancient ruins.</p>
+            </div>
+        </div>
+
+        <!-- Sydney Image -->
+        <div class="image-card" data-country="sydney" onclick="showDestination('sydney')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Sydney_Opera_House_and_Harbour_Bridge.jpg" alt="Sydney">
+            <div class="overlay">
+                <h3>Vibrant Sydney</h3>
+                <p>Visit the Opera House and Harbour Bridge.</p>
+            </div>
+        </div>
+
+        <!-- Dubai Image -->
+        <div class="image-card" data-country="dubai" onclick="showDestination('dubai')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Burj_Khalifa_from_The_Dubai_Mall.jpg" alt="Dubai">
+            <div class="overlay">
+                <h3>Futuristic Dubai</h3>
+                <p>See the Burj Khalifa and desert safaris.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="destinationPage" style="display: none;">
+        <div class="content" id="destinationContent"></div>
+        <button class="back-button" onclick="backToMainPage()">Back to Main Page</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterCountries() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const countryCards = document.querySelectorAll('.image-card');
+
+            countryCards.forEach(card => {
+                const countryName = card.getAttribute('data-country').toLowerCase();
+                if (countryName.includes(searchTerm)) {
+                    card.style.display = 'block';  // Show card
+                } else {
+                    card.style.display = 'none';  // Hide card
+                }
+            });
+        }
+
+        function showDestination(destination) {
+            // Hide the search bar and main page
+            document.getElementById("searchInput").style.display = "none";
+            document.getElementById("mainPage").style.display = "none";
+            document.getElementById("destinationPage").style.display = "flex";
+
+            let title = '';
+            let images = [];
+            let description = '';
+            let bestMonth = '';
+            let famousPlaces = '';
+
+            // Define content based on destination
+            if (destination === 'paris') {
+                title = 'Welcome to Paris';
+                images = [
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl7LPCJu6VTQjsUprfdtZ3b__WQTl2RH-oqw&s',
+                    'https://t4.ftcdn.net/jpg/09/82/06/29/360_F_982062968_8dE5tUmcCLeRemgu83TSTRm8dedpzslu.jpg',
+                    'https://farm6.staticflickr.com/5538/11671471365_431de44def_z.jpg'
+                ];
+                description = 'Paris, the capital of France, is known for its art, fashion, and landmarks. Visit iconic places like the Eiffel Tower, Louvre Museum, and Notre-Dame Cathedral. Experience the vibrant culture, stunning architecture, and delicious cuisine.';
+                bestMonth = 'Best Time to Visit: Spring (April to June) and Fall (September to November)';
+                famousPlaces = 'Famous Places: Eiffel Tower, Louvre Museum, Notre-Dame Cathedral, Sacré-Cœur Basilica.';
+            } else if (destination === 'bali') {
+                title = 'Welcome to Bali';
+                images = [
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSQW0v6-m1GQuwJhL5imutCRGPhTX5knUW9NOUwOx7t4qmVnJpfioiBJpfC6sxfxbhtE8&usqp=CAU',
+                    'https://upload.wikimedia.org/wikipedia/commons/0/0d/Tegallalang_Rice_Terrace_2017.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/d/d8/Pura_Ulun_Danu_Beratan%2C_Bali.jpg'
+                ];
+                description = 'Bali, an island in Indonesia, is known for its stunning beaches, lush forests, and vibrant culture. Relax on the pristine shores, visit ancient temples, or explore the vibrant nightlife.';
+                bestMonth = 'Best Time to Visit: April to October (dry season)';
+                famousPlaces = 'Famous Places: Tanah Lot Temple, Uluwatu Temple, Sacred Monkey Forest Sanctuary, Tegallalang Rice Terraces.';
+            } else if (destination === 'tokyo') {
+                title = 'Welcome to Tokyo';
+                images = [
+                    'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/4b/5d/10/caption.jpg?w=1400&h=1400&s=1&cx=1005&cy=690&chk=v1_2ed86f729380ea073850',
+                    'https://upload.wikimedia.org/wikipedia/commons/7/71/Tokyo_-_Aerial_View_Of_Skyscrapers.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/6/6a/Neon_lights_in_Shibuya%2C_Tokyo%2C_Japan.jpg'
+                ];
+                description = 'Tokyo is Japan\'s bustling capital, known for its towering skyscrapers, shopping districts, traditional temples, and modern attractions. Experience a blend of traditional Japanese culture with cutting-edge technology and fashion.';
+                bestMonth = 'Best Time to Visit: March to May (cherry blossom season) and October to December (pleasant weather)';
+                famousPlaces = 'Famous Places: Tokyo Tower, Senso-ji Temple, Akihabara, Shibuya Crossing.';
+            } else if (destination === 'newyork') {
+                title = 'Welcome to New York City';
+                images = [
+                    'https://www.planetware.com/photos-large/US/usa-new-york-city-central-park.jpg',
+                    'https://www.nycgo.com/assets/nycgo/common/images/hero/landing-hero-01.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/e/e5/New_York_2020_sunset.jpg'
+                ];
+                description = 'New York City is the most populous city in the U.S., known for its iconic landmarks such as Times Square, Central Park, and the Statue of Liberty. A global hub for culture, finance, and art, NYC offers an endless list of attractions for tourists.';
+                bestMonth = 'Best Time to Visit: April to June and September to early November (mild weather)';
+                famousPlaces = 'Famous Places: Statue of Liberty, Central Park, Times Square, Empire State Building.';
+            } else if (destination === 'london') {
+                title = 'Welcome to London';
+                images = [
+                    'https://upload.wikimedia.org/wikipedia/commons/3/3c/Big_Ben_%28London%29.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/a/a4/Westminster_Palace_from_Millennium_Wheel.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Tower_of_London_%28August_2007%29.jpg'
+                ];
+                description = 'London, the capital of England, is a global city with a rich history, iconic landmarks like Big Ben, Buckingham Palace, and the Tower of London. Explore world-class museums, theatres, and vibrant shopping streets.';
+                bestMonth = 'Best Time to Visit: May to September (warm weather)';
+                famousPlaces = 'Famous Places: Big Ben, Tower of London, Buckingham Palace, London Eye.';
+            } else if (destination === 'rome') {
+                title = 'Welcome to Rome';
+                images = [
+                    'https://upload.wikimedia.org/wikipedia/commons/6/66/Colosseum_in_Rome.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/5/52/Vatican_Museums_entrance.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/3/3c/Pantheon_of_Rome_%28Italy%29.jpg'
+                ];
+                description = 'Rome, Italy\'s capital, is known for its nearly 3,000 years of globally influential art, architecture, and culture. Ancient ruins like the Colosseum and Roman Forum evoke the power of the ancient Roman Empire.';
+                bestMonth = 'Best Time to Visit: April to June and September to October (pleasant weather)';
+                famousPlaces = 'Famous Places: Colosseum, Roman Forum, Vatican Museums, Pantheon.';
+            } else if (destination === 'sydney') {
+                title = 'Welcome to Sydney';
+                images = [
+                    'https://upload.wikimedia.org/wikipedia/commons/f/f9/Sydney_Opera_House_and_Harbour_Bridge.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/4/45/Sydney_Opera_House_Viewed_From_Mrs_Macquaries_Chair.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/d/dc/Sydney_Harbour_Bridge_at_night.jpg'
+                ];
+                description = 'Sydney, Australia\'s largest city, is known for its iconic Opera House and Harbour Bridge. It offers beautiful beaches, a vibrant cultural scene, and a laid-back atmosphere.';
+                bestMonth = 'Best Time to Visit: September to November and March to May (mild weather)';
+                famousPlaces = 'Famous Places: Opera House, Harbour Bridge, Bondi Beach, Royal Botanic Gardens.';
+            } else if (destination === 'dubai') {
+                title = 'Welcome to Dubai';
+                images = [
+                    'https://upload.wikimedia.org/wikipedia/commons/9/99/Burj_Khalifa_from_The_Dubai_Mall.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/1/18/Burj_Al_Arab.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/0/0b/Deira_Creek_in_Dubai%2C_UAE.jpg'
+                ];
+                description = 'Dubai, in the United Arab Emirates, is known for its modern architecture, luxury shopping, and vibrant nightlife scene. It is home to the tallest building in the world, the Burj Khalifa.';
+                bestMonth = 'Best Time to Visit: November to February (mild weather)';
+                famousPlaces = 'Famous Places: Burj Khalifa, Burj Al Arab, Dubai Mall, Palm Jumeirah.';
+            }
+
+            const carouselHTML = `
+                <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="${images[0]}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="${images[1]}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="${images[2]}" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <p><strong>${bestMonth}</strong></p>
+                <p><strong>Famous Places to Visit:</strong> ${famousPlaces}</p>
+            `;
+
+                        document.getElementById('destinationContent').innerHTML = carouselHTML;
+        }
+
+        function backToMainPage() {
+            document.getElementById("searchInput").style.display = "block";
+            document.getElementById("mainPage").style.display = "flex";
+            document.getElementById("destinationPage").style.display = "none";
+        }
+    </script>
+</body>
+</html>
